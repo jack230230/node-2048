@@ -53,6 +53,12 @@
 }
 ```
 
+### 本地开发
+
+1. 安装 [nodejs](http://nodejs.org) 环境和 [npm](https://www.npmjs.org)，具体方法请自行参考其官网文档。
+2. 在项目根目录执行 `npm install` 安装依赖项，然后执行 `grunt server` 即可启动开发服务器并调用系统浏览器打开 <http://localhost:9090>。
+3. 默认数使用的 MySQL 服务器地址为 `localhost`，数据库为 `test`，用户名为 `root`，密码为空。
+
 ------------------------------------
 
 # 2048
