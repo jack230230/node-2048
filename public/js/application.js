@@ -33,5 +33,11 @@ window.requestAnimationFrame(function () {
     gameManager.inputManager.listen()
   });
 
+  $('.game-start .name').keydown(function(e){
+    if (e.keyCode == 13 && $('.game-start .name').val() != '') {
+      $('.new-button').click();
+    }
+  });
+
   window.updateHiscore();
 });
