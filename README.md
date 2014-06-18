@@ -4,7 +4,19 @@
 
 本示例演示了怎样在应用内通过读取 `VCAP_SERVICES` 环境变量的值来获取服务信息并连接到服务。
 
-### 关于 VCAP_SERVICES 环境变量
+### 本地开发和运行
+
+1. 安装 [nodejs](http://nodejs.org) 环境和 [npm](https://www.npmjs.org)，具体方法请自行参考其官网文档。
+2. 在项目根目录执行 `npm install` 安装依赖项，然后执行 `grunt server` 即可启动开发服务器并调用系统浏览器打开 <http://localhost:9090>。
+3. 默认数使用的 MySQL 服务器地址为 `localhost`，数据库为 `test`，用户名为 `root`，密码为空。
+
+### 演示平台部署
+
+本应用只需要绑定 MySQL 服务就可以直接部署并运行起来了，应用会自动进行数据库表初始化操作（见：`index.js`文件）。
+
+------------------------------------
+
+### `VCAP_SERVICES` 环境变量介绍
 
 给应用绑定了服务，重启应用后，服务的相关信息就会被设置到 `VCAP_SERVICES` 的值里，该环境变量的值为 `JSON` 字符串，如果给一个应用绑定了多个服务或同一个服务的多个实例，它们的信息也会出现在这个环境变量的值里。
 
@@ -12,39 +24,39 @@
 
 > JSON 对象的格式为 `服务名 -> 数组`，数组内容为该服务的每个实例信息。数组的值对象中，`name` 为实例名，`credentials` 该服务实例的连接信息，在应用中需要获取的就是 `credentials` 的内容。
 
-### `VCAP_SERVICES` 环境变量示例：
+### `VCAP_SERVICES` 环境变量示例
 
 ```
 {
     "mysql": [
         {
-            "name": "mysql", 
-            "label": "mysql", 
+            "name": "mysql",
+            "label": "mysql",
             "tags": [
                 "mysql"
-            ], 
-            "plan": "100mb-dev", 
+            ],
+            "plan": "100mb-dev",
             "credentials": {
-                "hostname": "192.168.0.134", 
-                "port": 3306, 
-                "name": "cf_a77f5575_4cd2_45d7_8744_a42b3410d362", 
-                "username": "XndXUYoadzgNyBQr", 
-                "password": "7hzSmuhaUEpLuQZa", 
-                "uri": "mysql://XndXUYoadzgNyBQr:7hzSmuhaUEpLuQZa@192.168.0.134:3306/cf_a77f5575_4cd2_45d7_8744_a42b3410d362?reconnect=true", 
+                "hostname": "192.168.0.134",
+                "port": 3306,
+                "name": "cf_a77f5575_4cd2_45d7_8744_a42b3410d362",
+                "username": "XndXUYoadzgNyBQr",
+                "password": "7hzSmuhaUEpLuQZa",
+                "uri": "mysql://XndXUYoadzgNyBQr:7hzSmuhaUEpLuQZa@192.168.0.134:3306/cf_a77f5575_4cd2_45d7_8744_a42b3410d362?reconnect=true",
                 "jdbcUrl": "jdbc:mysql://XndXUYoadzgNyBQr:7hzSmuhaUEpLuQZa@192.168.0.134:3306/cf_a77f5575_4cd2_45d7_8744_a42b3410d362"
             }
         }
-    ], 
+    ],
     "elephantsql": [
         {
-            "name": "elephantsql-c6c60", 
-            "label": "elephantsql", 
+            "name": "elephantsql-c6c60",
+            "label": "elephantsql",
             "tags": [
-                "postgres", 
-                "postgresql", 
+                "postgres",
+                "postgresql",
                 "relational"
-            ], 
-            "plan": "turtle", 
+            ],
+            "plan": "turtle",
             "credentials": {
                 "uri": "postgres://seilbmbd:PHxTPJSbkcDakfK4cYwXHiIX9Q8p5Bxn@babar.elephantsql.com:5432/seilbmbd"
             }
@@ -52,12 +64,6 @@
     ]
 }
 ```
-
-### 本地开发
-
-1. 安装 [nodejs](http://nodejs.org) 环境和 [npm](https://www.npmjs.org)，具体方法请自行参考其官网文档。
-2. 在项目根目录执行 `npm install` 安装依赖项，然后执行 `grunt server` 即可启动开发服务器并调用系统浏览器打开 <http://localhost:9090>。
-3. 默认数使用的 MySQL 服务器地址为 `localhost`，数据库为 `test`，用户名为 `root`，密码为空。
 
 ------------------------------------
 
