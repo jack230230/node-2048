@@ -75,8 +75,8 @@ app.post('/hiscores', function(req, res){
   }
 
   pool.query(
-    "INSERT INTO `hiscores` (`name`, `score`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `score`=?",
-    [name, score, score],
+    "INSERT INTO `hiscores` (`name`, `score`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `score`= IF(score > ?, score, ?)",
+    [name, score, score, score],
     function(err, result) {
       if (err) throw err;
 
