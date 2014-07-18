@@ -2,6 +2,8 @@ var express    = require('express'),
     bodyParser = require('body-parser'),
     path       = require('path'),
     mysql      = require('mysql'),
+    validator  = require('validator'),
+    sanitizer  = require('sanitizer'),
     app        = express(),
     port       = process.env.VCAP_APP_PORT || 9090;
 
@@ -67,10 +69,23 @@ app.use('/',express.static(path.join(__dirname, 'public')));
 // create hiscore
 app.post('/hiscores', function(req, res){
   var name  = req.body.name,
-      score = parseInt(req.body.score);
+      score = req.body.score;
 
-  if (!name || name == '' || !score || score < 0) {
+  if (!name || name == '' || !score || score == '') {
     res.status(400).write('name or score not given');
+    return res.end();
+  }
+
+  // validate score
+  if (!validator.isInt(score)) {
+    res.status(400).write('invalid score');
+    return res.end();
+  }
+
+  // sanitize html
+  name = sanitizer.sanitize(name);
+  if (name == '') {
+    res.status(400).write('invalid name');
     return res.end();
   }
 
@@ -78,7 +93,10 @@ app.post('/hiscores', function(req, res){
     "INSERT INTO `hiscores` (`name`, `score`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `score`= IF(score > ?, score, ?)",
     [name, score, score, score],
     function(err, result) {
-      if (err) throw err;
+      if (err) {
+        res.status(500).write('database error: ' + err.code);
+        return res.end();
+      }
 
       res.status(201).end();
     }
